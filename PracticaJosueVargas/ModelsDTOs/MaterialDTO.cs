@@ -60,5 +60,7 @@ namespace PracticaJosueVargas.ModelsDTOs
 
         public string? LocationName { get; set; }
 
+        public LocationDTO? Location { get; set; }
+
     }
 }

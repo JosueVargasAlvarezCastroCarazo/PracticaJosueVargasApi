@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PracticaJosueVargas.Attributes;
 using PracticaJosueVargas.Models;
+using PracticaJosueVargas.ModelsDTOs;
 
 namespace PracticaJosueVargas.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+    //[ApiKey]
     public class ProjectsController : ControllerBase
     {
         private readonly materialadministrationContext _context;
@@ -23,14 +24,57 @@ namespace PracticaJosueVargas.Controllers
         }
 
         // GET: api/Projects
+        [HttpGet("Search")]
+        public ActionResult<IEnumerable<Project>> GetProjectsSearch(bool active, string search, bool admin, int user)
+        {
+            if (_context.Projects == null)
+            {
+                return NotFound();
+            }
+
+            if (admin)
+            {
+                return _context.Projects.Include(u => u.User).Where(u => u.Active == active && (u.Name.Contains(search) || u.Description.Contains(search))).ToList();
+            }
+
+            var userProjectsList = _context.UserConstructions.Include(u => u.Construction.User).Where(u => u.UserId == user && u.Construction.Active == active && (u.Construction.Name.Contains(search) || u.Construction.Description.Contains(search))).ToList();
+
+            var projects = new List<Project>();
+
+            foreach (var userProject in userProjectsList)
+            {
+                projects.Add(userProject.Construction);
+            }
+
+            return projects;
+        }
+
+        // GET: api/Projects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
+        public ActionResult<IEnumerable<Project>> GetProjects(bool active,bool admin,int user)
         {
           if (_context.Projects == null)
           {
               return NotFound();
           }
-            return await _context.Projects.ToListAsync();
+
+            if (admin)
+            {
+                return _context.Projects.Include(u => u.User).Where(u => u.Active == active).ToList();
+            }
+
+            var userProjectsList = _context.UserConstructions.Include(u => u.Construction.User).Where(u => u.UserId == user && u.Construction.Active == active).ToList();
+
+            var projects = new List<Project>();
+
+            foreach (var userProject in userProjectsList)
+            {
+                projects.Add(userProject.Construction);
+            }
+
+            return projects;
+
+
         }
 
         // GET: api/Projects/5
@@ -54,14 +98,14 @@ namespace PracticaJosueVargas.Controllers
         // PUT: api/Projects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProject(int id, Project project)
+        public async Task<IActionResult> PutProject(int id, ProjectDTO project)
         {
             if (id != project.ProjectId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(project).State = EntityState.Modified;
+            _context.Entry(project.getNativeModel()).State = EntityState.Modified;
 
             try
             {
@@ -85,13 +129,13 @@ namespace PracticaJosueVargas.Controllers
         // POST: api/Projects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Project>> PostProject(Project project)
+        public async Task<ActionResult<Project>> PostProject(ProjectDTO project)
         {
           if (_context.Projects == null)
           {
               return Problem("Entity set 'materialadministrationContext.Projects'  is null.");
           }
-            _context.Projects.Add(project);
+            _context.Projects.Add(project.getNativeModel());
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProject", new { id = project.ProjectId }, project);

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PracticaJosueVargas.Attributes;
 using PracticaJosueVargas.Models;
+using PracticaJosueVargas.ModelsDTOs;
 
 namespace PracticaJosueVargas.Controllers
 {
@@ -23,14 +24,25 @@ namespace PracticaJosueVargas.Controllers
         }
 
         // GET: api/Locations
+        [HttpGet("Search")]
+        public async Task<ActionResult<IEnumerable<Location>>> GetLocationsSearch(bool active, string search)
+        {
+            if (_context.Locations == null)
+            {
+                return NotFound();
+            }
+            return await _context.Locations.Where(u => u.Active == active  && (u.Name.Contains(search) || u.Description.Contains(search)) ).ToListAsync();
+        }
+
+        // GET: api/Locations
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
+        public async Task<ActionResult<IEnumerable<Location>>> GetLocations(bool active)
         {
           if (_context.Locations == null)
           {
               return NotFound();
           }
-            return await _context.Locations.ToListAsync();
+            return await _context.Locations.Where(u => u.Active == active).ToListAsync();
         }
 
         // GET: api/Locations/5
@@ -54,14 +66,14 @@ namespace PracticaJosueVargas.Controllers
         // PUT: api/Locations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocation(int id, Location location)
+        public async Task<IActionResult> PutLocation(int id, LocationDTO location)
         {
             if (id != location.LocationId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(location).State = EntityState.Modified;
+            _context.Entry(location.getNativeModel()).State = EntityState.Modified;
 
             try
             {
@@ -85,13 +97,13 @@ namespace PracticaJosueVargas.Controllers
         // POST: api/Locations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Location>> PostLocation(Location location)
+        public async Task<ActionResult<Location>> PostLocation(LocationDTO location)
         {
           if (_context.Locations == null)
           {
               return Problem("Entity set 'materialadministrationContext.Locations'  is null.");
           }
-            _context.Locations.Add(location);
+            _context.Locations.Add(location.getNativeModel());
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLocation", new { id = location.LocationId }, location);

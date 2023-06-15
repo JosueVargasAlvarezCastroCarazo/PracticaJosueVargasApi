@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PracticaJosueVargas.Attributes;
 using PracticaJosueVargas.Models;
+using PracticaJosueVargas.ModelsDTOs;
 
 namespace PracticaJosueVargas.Controllers
 {
@@ -23,14 +24,25 @@ namespace PracticaJosueVargas.Controllers
         }
 
         // GET: api/Materials
+        [HttpGet("Search")]
+        public async Task<ActionResult<IEnumerable<Material>>> GetMaterialsSearch(bool active, int project, string search)
+        {
+            if (_context.Materials == null)
+            {
+                return NotFound();
+            }
+            return await _context.Materials.Include(u => u.Location).Where(u => u.Active == active && u.ProjectId == project && (u.Name.Contains(search) || u.Description.Contains(search))).ToListAsync();
+        }
+
+        // GET: api/Materials
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Material>>> GetMaterials()
+        public async Task<ActionResult<IEnumerable<Material>>> GetMaterials(bool active, int project)
         {
           if (_context.Materials == null)
           {
               return NotFound();
           }
-            return await _context.Materials.ToListAsync();
+            return await _context.Materials.Include(u => u.Location).Where(u => u.Active == active && u.ProjectId == project).ToListAsync();
         }
 
         // GET: api/Materials/5
@@ -54,14 +66,14 @@ namespace PracticaJosueVargas.Controllers
         // PUT: api/Materials/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaterial(int id, Material material)
+        public async Task<IActionResult> PutMaterial(int id, MaterialDTO material)
         {
             if (id != material.MaterialId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(material).State = EntityState.Modified;
+            _context.Entry(material.getNativeModel()).State = EntityState.Modified;
 
             try
             {
@@ -85,13 +97,13 @@ namespace PracticaJosueVargas.Controllers
         // POST: api/Materials
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Material>> PostMaterial(Material material)
+        public async Task<ActionResult<Material>> PostMaterial(MaterialDTO material)
         {
           if (_context.Materials == null)
           {
               return Problem("Entity set 'materialadministrationContext.Materials'  is null.");
           }
-            _context.Materials.Add(material);
+            _context.Materials.Add(material.getNativeModel());
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMaterial", new { id = material.MaterialId }, material);

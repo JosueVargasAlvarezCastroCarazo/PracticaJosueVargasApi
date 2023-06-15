@@ -38,5 +38,7 @@ namespace PracticaJosueVargas.ModelsDTOs
         public int UserId { get; set; }
         public int ConstructionId { get; set; }
 
+        public UserDTO? User { get; set; }
+
     }
 }

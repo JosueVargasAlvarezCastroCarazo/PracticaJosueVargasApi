@@ -30,7 +30,7 @@ namespace PracticaJosueVargas.Controllers
           {
               return NotFound();
           }
-            return await _context.ConstructionStatuses.ToListAsync();
+            return await _context.ConstructionStatuses.Where(u => u.Active == true).ToListAsync();
         }
 
         // GET: api/ConstructionStatus/5

@@ -23,7 +23,7 @@ namespace PracticaJosueVargas.Controllers
             _context = context;
         }
 
-        // GET: api/Locations
+        // GET: api/Locations retorna las localizaciones con parametros de busqueda
         [HttpGet("Search")]
         public async Task<ActionResult<IEnumerable<Location>>> GetLocationsSearch(bool active, string search)
         {
@@ -34,7 +34,7 @@ namespace PracticaJosueVargas.Controllers
             return await _context.Locations.Where(u => u.Active == active  && (u.Name.Contains(search) || u.Description.Contains(search)) ).ToListAsync();
         }
 
-        // GET: api/Locations
+        // GET: api/Locations retorna una lista completa de localizaciones
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Location>>> GetLocations(bool active)
         {
@@ -45,7 +45,7 @@ namespace PracticaJosueVargas.Controllers
             return await _context.Locations.Where(u => u.Active == active).ToListAsync();
         }
 
-        // GET: api/Locations/5
+        // GET: api/Locations/5 retorna una localizacion segun un id
         [HttpGet("{id}")]
         public async Task<ActionResult<Location>> GetLocation(int id)
         {
@@ -63,7 +63,7 @@ namespace PracticaJosueVargas.Controllers
             return location;
         }
 
-        // PUT: api/Locations/5
+        // PUT: api/Locations/5 actualiza una localizacion segun un id
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLocation(int id, LocationDTO location)
@@ -94,7 +94,7 @@ namespace PracticaJosueVargas.Controllers
             return NoContent();
         }
 
-        // POST: api/Locations
+        // POST: api/Locations crea una nueva localizacion
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Location>> PostLocation(LocationDTO location)
@@ -109,7 +109,7 @@ namespace PracticaJosueVargas.Controllers
             return CreatedAtAction("GetLocation", new { id = location.LocationId }, location);
         }
 
-        // DELETE: api/Locations/5
+        // DELETE: api/Locations/5 elimina una localizacion por id
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocation(int id)
         {

@@ -23,7 +23,7 @@ namespace PracticaJosueVargas.Controllers
             _context = context;
         }
 
-        // GET: api/Materials
+        // GET: api/Materials retorna una lista de materiales con parametros de busqueda y proyecto
         [HttpGet("Search")]
         public async Task<ActionResult<IEnumerable<Material>>> GetMaterialsSearch(bool active, int project, string search)
         {
@@ -34,7 +34,7 @@ namespace PracticaJosueVargas.Controllers
             return await _context.Materials.Include(u => u.Location).Where(u => u.Active == active && u.ProjectId == project && (u.Name.Contains(search) || u.Description.Contains(search))).ToListAsync();
         }
 
-        // GET: api/Materials
+        // GET: api/Materials retorna una lista de materiales de un proyecto
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Material>>> GetMaterials(bool active, int project)
         {
@@ -45,7 +45,7 @@ namespace PracticaJosueVargas.Controllers
             return await _context.Materials.Include(u => u.Location).Where(u => u.Active == active && u.ProjectId == project).ToListAsync();
         }
 
-        // GET: api/Materials/5
+        // GET: api/Materials/5 retorna un material segun un id
         [HttpGet("{id}")]
         public async Task<ActionResult<Material>> GetMaterial(int id)
         {
@@ -63,7 +63,7 @@ namespace PracticaJosueVargas.Controllers
             return material;
         }
 
-        // PUT: api/Materials/5
+        // PUT: api/Materials/5 actualiza un material por id
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMaterial(int id, MaterialDTO material)
@@ -94,7 +94,7 @@ namespace PracticaJosueVargas.Controllers
             return NoContent();
         }
 
-        // POST: api/Materials
+        // POST: api/Materials crea un nuevo material
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Material>> PostMaterial(MaterialDTO material)
@@ -109,7 +109,7 @@ namespace PracticaJosueVargas.Controllers
             return CreatedAtAction("GetMaterial", new { id = material.MaterialId }, material);
         }
 
-        // DELETE: api/Materials/5
+        // DELETE: api/Materials/5 elimina una meterial por id
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMaterial(int id)
         {

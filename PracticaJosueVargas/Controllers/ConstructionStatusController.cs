@@ -22,7 +22,7 @@ namespace PracticaJosueVargas.Controllers
             _context = context;
         }
 
-        // GET: api/ConstructionStatus
+        // GET: api/ConstructionStatus devuelve una lista de estados para los proyectos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ConstructionStatus>>> GetConstructionStatuses()
         {
@@ -33,7 +33,7 @@ namespace PracticaJosueVargas.Controllers
             return await _context.ConstructionStatuses.Where(u => u.Active == true).ToListAsync();
         }
 
-        // GET: api/ConstructionStatus/5
+        // GET: api/ConstructionStatus/5 devuelve un estado mediante un id
         [HttpGet("{id}")]
         public async Task<ActionResult<ConstructionStatus>> GetConstructionStatus(int id)
         {
@@ -51,7 +51,7 @@ namespace PracticaJosueVargas.Controllers
             return constructionStatus;
         }
 
-        // PUT: api/ConstructionStatus/5
+        // PUT: api/ConstructionStatus/5 actualiza un estado segun un id
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutConstructionStatus(int id, ConstructionStatus constructionStatus)
@@ -82,7 +82,7 @@ namespace PracticaJosueVargas.Controllers
             return NoContent();
         }
 
-        // POST: api/ConstructionStatus
+        // POST: api/ConstructionStatus crea un nuevo estado de proyecto
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ConstructionStatus>> PostConstructionStatus(ConstructionStatus constructionStatus)
@@ -97,7 +97,7 @@ namespace PracticaJosueVargas.Controllers
             return CreatedAtAction("GetConstructionStatus", new { id = constructionStatus.ConstructionStatusId }, constructionStatus);
         }
 
-        // DELETE: api/ConstructionStatus/5
+        // DELETE: api/ConstructionStatus/5 elimina un estado de proyecto
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteConstructionStatus(int id)
         {

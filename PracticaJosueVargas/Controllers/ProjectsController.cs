@@ -23,7 +23,8 @@ namespace PracticaJosueVargas.Controllers
             _context = context;
         }
 
-        // GET: api/Projects
+        // GET: api/Projects retorna una lista de proyectos de construccion segun parametros de busqueda, se verifica si es administrador para retornar todos los proyectos o solo en los que es parte
+        // de la cuadrilla
         [HttpGet("Search")]
         public ActionResult<IEnumerable<Project>> GetProjectsSearch(bool active, string search, bool admin, int user)
         {
@@ -49,7 +50,8 @@ namespace PracticaJosueVargas.Controllers
             return projects;
         }
 
-        // GET: api/Projects
+        // GET: api/Projects retorna una lista de proyectos, se verifica si es administrador para retornar todos los proyectos o solo en los que es parte
+        // de la cuadrilla
         [HttpGet]
         public ActionResult<IEnumerable<Project>> GetProjects(bool active,bool admin,int user)
         {
@@ -77,7 +79,7 @@ namespace PracticaJosueVargas.Controllers
 
         }
 
-        // GET: api/Projects/5
+        // GET: api/Projects/5 retorna un proyecto por un id
         [HttpGet("{id}")]
         public async Task<ActionResult<Project>> GetProject(int id)
         {
@@ -95,7 +97,7 @@ namespace PracticaJosueVargas.Controllers
             return project;
         }
 
-        // PUT: api/Projects/5
+        // PUT: api/Projects/5 actualiza un proyecto segun un id
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProject(int id, ProjectDTO project)
@@ -126,7 +128,7 @@ namespace PracticaJosueVargas.Controllers
             return NoContent();
         }
 
-        // POST: api/Projects
+        // POST: api/Projects crea un nuevo proyecto de construccion
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Project>> PostProject(ProjectDTO project)
@@ -141,7 +143,7 @@ namespace PracticaJosueVargas.Controllers
             return CreatedAtAction("GetProject", new { id = project.ProjectId }, project);
         }
 
-        // DELETE: api/Projects/5
+        // DELETE: api/Projects/5 elimina un proyecto segun un id
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {

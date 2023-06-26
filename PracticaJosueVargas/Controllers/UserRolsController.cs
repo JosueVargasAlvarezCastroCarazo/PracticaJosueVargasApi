@@ -23,7 +23,7 @@ namespace PracticaJosueVargas.Controllers
             _context = context;
         }
 
-        // GET: api/UserRols
+        // GET: api/UserRols retorna una lista de roles de usuario
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserRol>>> GetUserRols()
         {
@@ -34,7 +34,7 @@ namespace PracticaJosueVargas.Controllers
             return await _context.UserRols.Where(u => u.Active == true).ToListAsync();
         }
 
-        // GET: api/UserRols/5
+        // GET: api/UserRols/5 retorna un rol de usuario por id
         [HttpGet("{id}")]
         public async Task<ActionResult<UserRol>> GetUserRol(int id)
         {
@@ -52,7 +52,7 @@ namespace PracticaJosueVargas.Controllers
             return userRol;
         }
 
-        // PUT: api/UserRols/5
+        // PUT: api/UserRols/5 actualiza un rol de usuario segun un id
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUserRol(int id, UserRol userRol)
@@ -83,7 +83,7 @@ namespace PracticaJosueVargas.Controllers
             return NoContent();
         }
 
-        // POST: api/UserRols
+        // POST: api/UserRols crea un nuevo rol de usuario
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<UserRol>> PostUserRol(UserRol userRol)
@@ -98,7 +98,7 @@ namespace PracticaJosueVargas.Controllers
             return CreatedAtAction("GetUserRol", new { id = userRol.UserRolId }, userRol);
         }
 
-        // DELETE: api/UserRols/5
+        // DELETE: api/UserRols/5 elimina un rol de usuario segun un id
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserRol(int id)
         {

@@ -47,7 +47,7 @@ namespace PracticaJosueVargas.Controllers
             return query;
         }
 
-        // GET: api/Users
+        // GET: api/Users retorna la lista de usuarios general
         [HttpGet]
         public ActionResult<IEnumerable<UserDTO>> GetUsers(bool active)
         {
@@ -74,7 +74,7 @@ namespace PracticaJosueVargas.Controllers
             return query;
         }
 
-        // GET: api/Users/5
+        // GET: api/Users/5 retorna un usuario especifico
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> GetUser(int id)
         {
@@ -92,7 +92,7 @@ namespace PracticaJosueVargas.Controllers
             return new UserDTO(user);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Users/5 actualiza un usuario segun id
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, UserDTO user)
@@ -157,7 +157,7 @@ namespace PracticaJosueVargas.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Users crea un nuevo usuario y encripta la contraseña
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserDTO user)
@@ -176,7 +176,7 @@ namespace PracticaJosueVargas.Controllers
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Users/5 elimina un usuario de manera permanente
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -202,7 +202,7 @@ namespace PracticaJosueVargas.Controllers
         }
 
 
-        //devuelve un usurio segun identificacion y contra
+        //devuelve un usurio segun identificacion y contra este metodo se utiliza para usar login
         [HttpGet("LoginUser")]
         //this use query string
         public async Task<ActionResult<UserDTO>> LoginUser(string identification, string password)

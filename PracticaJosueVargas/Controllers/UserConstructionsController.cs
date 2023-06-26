@@ -21,7 +21,7 @@ namespace PracticaJosueVargas.Controllers
             _context = context;
         }
 
-        // GET: api/UserConstructions
+        // GET: api/UserConstructions retorna la cuadrilla de un proyecto
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserConstruction>>> GetUserConstructions(int project)
         {
@@ -32,7 +32,7 @@ namespace PracticaJosueVargas.Controllers
             return await _context.UserConstructions.Include(u => u.User).Where(u => u.ConstructionId == project).ToListAsync();
         }
 
-        // GET: api/UserConstructions/5
+        // GET: api/UserConstructions/5 retorna un elemento de cuadrilla segun un id
         [HttpGet("{id}")]
         public async Task<ActionResult<UserConstruction>> GetUserConstruction(int id)
         {
@@ -50,7 +50,7 @@ namespace PracticaJosueVargas.Controllers
             return userConstruction;
         }
 
-        // PUT: api/UserConstructions/5
+        // PUT: api/UserConstructions/5 actualiza un elemento de cuadrilla segun un id
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUserConstruction(int id, UserConstruction userConstruction)
@@ -81,7 +81,7 @@ namespace PracticaJosueVargas.Controllers
             return NoContent();
         }
 
-        // POST: api/UserConstructions
+        // POST: api/UserConstructions crea un nuevo elemento de cuadrilla
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<UserConstruction>> PostUserConstruction(UserConstructionDTO userConstruction)
@@ -105,7 +105,7 @@ namespace PracticaJosueVargas.Controllers
  
         }
 
-        // DELETE: api/UserConstructions/5
+        // DELETE: api/UserConstructions/5 elimina un elemento de cuadrilla segun un id
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserConstruction(int id)
         {

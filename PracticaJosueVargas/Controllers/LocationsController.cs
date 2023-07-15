@@ -129,6 +129,7 @@ namespace PracticaJosueVargas.Controllers
             return NoContent();
         }
 
+        //verifica la existencia de una localizacion
         private bool LocationExists(int id)
         {
             return (_context.Locations?.Any(e => e.LocationId == id)).GetValueOrDefault();
